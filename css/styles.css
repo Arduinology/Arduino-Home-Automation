@@ -1,0 +1,18 @@
+/* 
+    Document   : styles
+    Created on : Sep 28, 2011, 8:46:13 PM
+    Author     : heath
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+div.sliderParent { padding: 10px !important; width: 200px;}
+
