@@ -3,7 +3,7 @@ require_once "php_serial.class.php";
 class arduinoInterface{
     function __construct(){
         $this->serial = new phpSerial();
-        if($this->serial->deviceSet("/dev/ttyACM0")){
+        if($this->serial->deviceSet("/dev/ttyACM1")){
         } else echo "Cannot set device";
         $this->serial->confBaudRate(9600);
         $this->serial->confCharacterLength(8);
