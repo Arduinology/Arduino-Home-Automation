@@ -17,12 +17,14 @@ $(function(){
                 if(lastLedArray.length > 0){ 
                     for(i=0;i<7;i++){
                         if(lastLedArray[i] != ledArray[i]){
+                        console.log(i+"="+ledArray[i]);
                             $.ajax({
-                                type: "POST",
-                                url: "scripts/ajaxFunctions.php",
-                                data: "state="+ledArray[i]+"&pin="+i,
+                                type: "GET",
+                                url: "http://192.168.1.202",
+                                data: "11=1",
+                                dataType: "jsonp",
                                 success: function(msg){
-                                    
+                                    console.log("here");
                                 }
                             });
                         lastLedArray[i]=ledArray[i];
@@ -50,7 +52,7 @@ $(function(){
                 url: "scripts/ajaxFunctions.php",
                 data: "state="+$(this).attr('name')+"&pin="+$(this).attr('id'),
                 success: function(msg){
-                   //console.log(msg);
+                   console.log(msg);
                 }
             });
     });

@@ -3,12 +3,18 @@ require_once "php_serial.class.php";
 class arduinoInterface{
     function __construct(){
         $this->serial = new phpSerial();
-        if($this->serial->deviceSet("/dev/ttyACM1")){
-        } else echo "Cannot set device";
+        if($this->serial->deviceSet("/dev/ttyACM0"));
+        else echo "Can't set device";
         $this->serial->confBaudRate(9600);
         $this->serial->confCharacterLength(8);
     }
- 
+    function setDevice(){
+        for($i=0;$i<10;$i++){
+            echo "/dev/ttyACM".$i;
+            if($this->serial->deviceSet("/dev/ttyACM".$i)){
+            }
+        }
+    }
     function sendData($state, $pin){
         if($this->serial->deviceOpen()){
             $this->serial->sendMessage($pin."=".$state."\n"  );
