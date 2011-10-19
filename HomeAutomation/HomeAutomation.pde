@@ -98,13 +98,6 @@ void checkForClient(char *buf){
         if(c == '?') reading = true; //found the ?, begin reading the info
         if(reading){
           buf[i] = c;
-          client.print(c, BIN);
-          client.println();
-          client.print(c, DEC);
-          client.println();
-          client.print(c);
-          client.println("<br/>");
-          //client.print(c);
           i++;
         }
         if (c == '\n' && currentLineIsBlank)  break;
