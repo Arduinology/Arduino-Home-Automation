@@ -19,6 +19,7 @@ Server server = Server(80);
 
 boolean reading = false;
 char buf[16];
+char post[16];
 char pin_id[5];
 char value[5];
 
@@ -78,11 +79,12 @@ void automation1(char *pin_id, char *value, Client client){
 }
 void checkForClient(char *buf){
   memset(buf, 0, 16);
+  memset(post, 0, 16);
   int i = 0;
   Client client = server.available();
   if (client) {
     boolean currentLineIsBlank = true;
-    boolean sentHeader = false;
+    boolean sentHeader = false;;
     while (client.connected()) {
       if (client.available()) {
         if(!sentHeader){
@@ -95,12 +97,24 @@ void checkForClient(char *buf){
         char c = client.read();
         client.print(c);
         if(reading && c == ' ') reading = false;
-        if(c == '?') reading = true; //found the ?, begin reading the info
+        if(c == '?') reading = true; //found the ?, begin reading the GET info
         if(reading){
           buf[i] = c;
           i++;
         }
-        if (c == '\n' && currentLineIsBlank)  break;
+        //if (c == '\n' && currentLineIsBlank)  break;
+        //Read POST Value
+        if (c == '\n' && currentLineIsBlank){
+          i = 0;
+           while(client.available())
+           {
+              c = client.read();
+              post[i] = c;
+              client.print(c);
+              i++;
+           }
+           break;
+        }
         if (c == '\n') {
           currentLineIsBlank = true;
         }
@@ -109,8 +123,7 @@ void checkForClient(char *buf){
         }
       }
     }
-    delay(5);
-    setValues(buf, client);
+    setValues(post, client);
     client.println("<br />");
     automation1(pin_id, value, client);
     client.stop();
@@ -119,7 +132,7 @@ void checkForClient(char *buf){
 
 void setValues(char *buf, Client client){
   if(buf[0] != 0){  
-    sscanf(buf, "?%7[a-zA-Z0-9]=%7[a-zA-Z0-9]", pin_id, value);
+    sscanf(buf, "%7[a-zA-Z0-9]=%7[a-zA-Z0-9]", pin_id, value);
     client.print(pin_id);
   }
 }

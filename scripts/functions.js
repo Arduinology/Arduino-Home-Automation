@@ -2,29 +2,29 @@ $(function(){
     var i = 0;
     var ledArray=new Array();
     var lastLedArray = new Array();
+    var sliderLength = 12;
     $("#slider").slider({
         range: "max",
         min: 0,
-	max: 7,
+	max: sliderLength,
         slide: function( event, ui ) {
             curLoc = ui.value;
-                for(ledPin=0;ledPin<7;ledPin++){
+                for(ledPin=0;ledPin<sliderLength;ledPin++){
                     if(ledPin<curLoc){
                         ledArray[ledPin] = 1;
                     } else ledArray[ledPin] = 0;
                 }
 
                 if(lastLedArray.length > 0){ 
-                    for(i=0;i<7;i++){
+                    for(i=0;i<sliderLength;i++){
                         if(lastLedArray[i] != ledArray[i]){
-                        console.log(i+"="+ledArray[i]);
                             $.ajax({
-                                type: "GET",
-                                url: "http://192.168.1.202",
-                                data: "11=1",
-                                dataType: "jsonp",
+                                url: "curlTest.php",
+                                type: "POST",
+                                data: 'pin='+i+'&value='+ledArray[i],
+                                dataType: "html",
                                 success: function(msg){
-                                    console.log("here");
+                                    console.log(msg);
                                 }
                             });
                         lastLedArray[i]=ledArray[i];
@@ -32,7 +32,7 @@ $(function(){
                     }
                 }
                 else{
-                    for(i=0;i<7;i++){
+                    for(i=0;i<sliderLength;i++){
                         lastLedArray[i]=ledArray[i];
                         
                     }
